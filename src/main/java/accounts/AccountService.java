@@ -2,11 +2,11 @@ package accounts;
 
 import dbService.DBException;
 import dbService.DBService;
+import org.hibernate.exception.ConstraintViolationException;
 
 
 public class AccountService {
-    // private final Map<String, UserProfile> loginToProfile;
-    // private final Map<String, UserProfile> sessionIdToProfile;
+
     private final DBService dbservice;
 
 
@@ -16,13 +16,12 @@ public class AccountService {
 
     }
 
-    public void addNewUser(UserProfile userProfile)  {
+    public void addNewUser(UserProfile userProfile) throws ConstraintViolationException {
 
-        try {
-            dbservice.addUser(userProfile);
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
+
+        dbservice.addUser(userProfile);
+
+
     }
 
     public UserProfile  getUserByLogin(String login)  {

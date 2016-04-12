@@ -1,7 +1,5 @@
 package Inicializators;
 
-import servlets.SessionsServlet;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +11,8 @@ import java.util.List;
 public class ReflectionFieldsDeployer {
     private static boolean first = true;
     private static List<Field> list = new ArrayList() ;
-   private static final  String limitClass = "servlets.SessionsServlet";
+   private static final  String limitClass = "servlets.MainServlet";
+
     public static List<Field> deploy(Class o) {
 
         Class SuperClazz = o.getSuperclass();

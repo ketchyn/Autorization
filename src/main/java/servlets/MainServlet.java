@@ -20,14 +20,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
-/**
- * @author v.chibrikov
- *         <p>
- *         Пример кода для курса на https://stepic.org/
- *         <p>
- *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
- */
-public class SessionsServlet extends HttpServlet {
+
+public class MainServlet extends HttpServlet {
 
 //maybe replace in constructor
     @Inject("DBService")
@@ -44,33 +38,18 @@ public class SessionsServlet extends HttpServlet {
         }
 
 
-    public  SessionsServlet() {
-
-       something();
-    }
-
-    public void something(){
-        ///
+    public MainServlet() {
 
     }
+
+
 
 
 
     //get logged user profile
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
-    /*    String sessionId = request.getSession().getId();
-        UserProfile profile = accountService.getUserBySessionId(sessionId);
-        if (profile == null) {
-            response.setContentType("text/html;charset=utf-8");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        } else {
-            Gson gson = new Gson();
-            String json = gson.toJson(profile);
-            response.setContentType("text/html;charset=utf-8");
-            response.getWriter().println(json);
-            response.setStatus(HttpServletResponse.SC_OK);
-        }*/
+
     }
 
     //sign in
@@ -90,21 +69,7 @@ public class SessionsServlet extends HttpServlet {
         }
 
 
-       /* UserProfile profile = accountService.getUserByLogin(login);
-        if (profile == null || !profile.getPass().equals(pass)) {
-            response.setContentType("text/html;charset=utf-8");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
-        accountService.addSession(request.getSession().getId(), profile);
-        Gson gson = new Gson();
-        String json = gson.toJson(profile);
-        response.setContentType("text/html;charset=utf-8");
-        response.getWriter().println(json);
-        response.setStatus(HttpServletResponse.SC_OK);*/
     }
 
-    //sign out
 
 }

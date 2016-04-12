@@ -26,7 +26,7 @@ public class UsersDataSet implements Serializable { // Serializable Important to
     @Column(name = "login", unique = true, updatable = false)
     private String login;
 
-    @Column(name = "password", unique = true, updatable = false)
+    @Column(name = "password", unique = false, updatable = false)
     private String password;
 
     @Column(name = "email", unique = true, updatable = false)
@@ -42,6 +42,11 @@ public class UsersDataSet implements Serializable { // Serializable Important to
         this.login = userProfile.getLogin();
         this.password = userProfile.getPass();
         this.email = userProfile.getEmail();
+    }
+    public UsersDataSet(String login, String password, String email) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
     }
 
 

@@ -3,11 +3,8 @@ package servlets
 import Inicializators.ReflectionFieldsDeployer
 import accounts.AccountService
 import dbService.DBService
-import javafx.beans.binding.When
-import junit.framework.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentCaptor
 
 import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServletRequest
@@ -22,14 +19,14 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Alexandr on 23.02.2016.
  */
-class SessionsServletTest  {
-    private SessionsServlet sessionsServlet;
+class MainServletTest {
+    private MainServlet sessionsServlet;
     private DBService dbServiceMock
     private AccountService accountServiceMock;
     private ReflectionFieldsDeployer reflectionFieldsDeployer;
     private HttpServletRequest requestMock;
     private HttpServletResponse responseMock;
-    SessionsServlet servlet;
+    MainServlet servlet;
 
 
 
@@ -39,7 +36,7 @@ class SessionsServletTest  {
         accountServiceMock = mock(accounts.AccountService.class)
         requestMock = mock(HttpServletRequest.class)
         responseMock = mock(HttpServletResponse.class)
-         servlet = new SessionsServlet();
+         servlet = new MainServlet();
        // spy.destroy();
     }
 
@@ -55,7 +52,7 @@ class SessionsServletTest  {
     }
     @Test
     void isInitInvoke() {
-        SessionsServlet spy = spy(servlet);
+        MainServlet spy = spy(servlet);
         ServletConfig a = null;
        verify(spy, never()).init(a);
       assertThat(spy.accountService, equalTo(null));
@@ -67,8 +64,8 @@ class SessionsServletTest  {
 
 @Test
 void isSomethingnvoke() {
-   // SessionsServlet ser = new SessionsServlet();
-    SessionsServlet spy = spy(new SessionsServlet());
+   // MainServlet ser = new MainServlet();
+    MainServlet spy = spy(new MainServlet());
  verify(spy,times(1)).something();
 
 
@@ -77,7 +74,7 @@ void isSomethingnvoke() {
 
     @Test
     void isConstructorInvoked() {
-        SessionsServlet spy = spy(servlet);
+        MainServlet spy = spy(servlet);
         assertEquals(spy.a,5);
         spy.destroy();
 

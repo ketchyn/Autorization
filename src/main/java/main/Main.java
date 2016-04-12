@@ -6,7 +6,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import servlets.SessionsServlet;
+import servlets.MainServlet;
 import servlets.UsersServlet;
 
 /**
@@ -19,14 +19,12 @@ import servlets.UsersServlet;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-
-
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
 
         ServletHolder holder = new ServletHolder(new UsersServlet());
 
-        ServletHolder holder1 = new ServletHolder(new SessionsServlet());
+        ServletHolder holder1 = new ServletHolder(new MainServlet());
 
 
         context.addServlet(holder, "/api/v1/users");
@@ -36,10 +34,6 @@ public class Main {
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setResourceBase("public_html");
         resource_handler.setDirectoriesListed(true);
-
-
-
-
 
 
         HandlerList handlers = new HandlerList();

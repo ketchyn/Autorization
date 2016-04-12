@@ -7,5 +7,5 @@ import accounts.UserProfile;
  */
 public interface DBService {
     public UserProfile getUser(String  login) throws DBException;
-    public long addUser(UserProfile userProfile)throws DBException;
+    public long addUser(UserProfile userProfile);
 }

@@ -14,11 +14,11 @@ import org.hibernate.criterion.Restrictions;
  *         <p>
  *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
  */
-public class UsersDAO {
+public class UsersHibDAO {
 
     private Session session;
 
-    public UsersDAO(Session session) {
+    public UsersHibDAO(Session session) {
         this.session = session;
     }
 

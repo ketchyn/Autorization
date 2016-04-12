@@ -1,30 +1,16 @@
 package servlets;
 
-import Annotations.Inject;
-import Inicializators.Initialize;
-import Inicializators.ReflectionFieldsDeployer;
-import accounts.AccountService;
 import accounts.UserProfile;
-import dbService.DBService;
+import org.hibernate.exception.ConstraintViolationException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.List;
 
-/**
- * @author v.chibrikov
- *         <p>
- *         Пример кода для курса на https://stepic.org/
- *         <p>
- *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
- */
-public class UsersServlet extends SessionsServlet {
-    @SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"}) //todo: remove after module 2 home work
+
+public class UsersServlet extends MainServlet {
+
 
 
     public UsersServlet() {
@@ -34,22 +20,34 @@ public class UsersServlet extends SessionsServlet {
     //get public user profile
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
-        //todo: module 2 home work
+
     }
 
     //sign up
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(dbService.toString());
+        //System.out.println(dbService.toString());
         String login = request.getParameter("login");
 
         String pass = request.getParameter("password");
         String email = request.getParameter("email");
         UserProfile user =  new UserProfile(login, pass, email);
+
         if(accountService.getUserByLogin(login)==null){
 
-            accountService.addNewUser(user);
-            response.getWriter().print(" registred");
+            try {
+                accountService.addNewUser(user);
+                response.getWriter().print(" registred");
+
+            } catch (ConstraintViolationException e) {
+                String  str = e.getCause().getMessage();
+                if (str.toString().contains("email")) response.getWriter().print(" such email already exists");
+                else
+                if (str.toString().contains("login")) response.getWriter().print(" such login already exists");
+                else response.getWriter().print(str);
+
+            }
+
         } else   response.getWriter().print(" allready registred");
 
 
@@ -58,12 +56,12 @@ public class UsersServlet extends SessionsServlet {
     //change profile
     public void doPut(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
-        //todo: module 2 home work
+
     }
 
     //unregister
     public void doDelete(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-        //todo: module 2 home work
+
     }
 }

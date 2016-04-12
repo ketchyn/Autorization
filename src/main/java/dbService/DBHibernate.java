@@ -1,14 +1,12 @@
 package dbService;
 
 import accounts.UserProfile;
-import dbService.dao.UsersDAO;
+import dbService.dao.UsersHibDAO;
 import dbService.dataSets.UsersDataSet;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
 
@@ -21,13 +19,7 @@ import java.sql.SQLException;
 public class DBHibernate implements DBService {
 
 
-    /**
-     * @author v.chibrikov
-     *         <p>
-     *         Пример кода для курса на https://stepic.org/
-     *         <p>
-     *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
-     */
+
 
         private static final String hibernate_show_sql = "true";
         private static final String hibernate_hbm2ddl_auto = "update";
@@ -90,7 +82,7 @@ public class DBHibernate implements DBService {
         public UsersDataSet getUser(long id) throws DBException {
             try {
                 Session session = sessionFactory.openSession();
-                UsersDAO dao = new UsersDAO(session);
+                UsersHibDAO dao = new UsersHibDAO(session);
                 UsersDataSet dataSet = dao.get(id);
                 session.close();
                 return dataSet;
@@ -101,32 +93,49 @@ public class DBHibernate implements DBService {
 
 
         public UserProfile getUser(String  login) throws DBException {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
             try {
-                Session session = sessionFactory.openSession();
-                UsersDAO dao = new UsersDAO(session);
+                UsersHibDAO dao = new UsersHibDAO(session);
                 UserProfile userProfile = dao.getUserProfile(login);
-                session.close();
+                transaction.commit();
                 return userProfile;
             } catch (HibernateException e) {
+                transaction.rollback();
                 throw new DBException(e);
             }
+            finally {
+
+                session.close();
+            }
+
         }
 
 
 
 
-        public long addUser(UserProfile userProfile) throws DBException {
+        public long addUser(UserProfile userProfile) throws ConstraintViolationException {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
             try {
-                Session session = sessionFactory.openSession();
-                Transaction transaction = session.beginTransaction();
-                UsersDAO dao = new UsersDAO(session);
+                UsersHibDAO dao = new UsersHibDAO(session);
                 long id = dao.insertUser(userProfile);
                 transaction.commit();
-                session.close();
                 return id;
-            } catch (HibernateException e) {
-                throw new DBException(e);
             }
+
+            catch (HibernateException e) {
+                if(e.getClass().equals(ConstraintViolationException.class)) throw (ConstraintViolationException)e;
+                else {
+                    transaction.rollback();
+                    e.printStackTrace();
+                }
+            }
+           finally {
+
+                session.close();
+            }
+            return -1;
         }
 
         public void printConnectInfo() {

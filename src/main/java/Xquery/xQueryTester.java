@@ -22,7 +22,7 @@ public class xQueryTester {
         XQConnection conn = ds.getConnection();
        XQExpression exp = conn.createExpression();
        String xqueryString =
-       "for $x in doc('classes.xml')/Context/"+ name +  " return $x/ClassName"+ "/text()";
+       "for $x in doc('src/main/resourses/classes.xml')/Context/"+ name +  " return $x/ClassName"+ "/text()";
        XQResultSequence result = null;
        try {
            result = exp.executeQuery(xqueryString);
